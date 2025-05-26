@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Añadir Nuevo Festival</title>
   <style>
     body {
@@ -13,35 +14,42 @@
       flex-direction: column;
       align-items: center;
     }
+
     form {
       background: white;
       padding: 2rem;
       border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
       max-width: 400px;
       width: 100%;
     }
+
     h1 {
       font-size: 1.8rem;
       margin-bottom: 0.2rem;
     }
+
     p {
       color: #666;
       margin-bottom: 1.5rem;
     }
+
     label {
       display: block;
       margin-top: 1rem;
       margin-bottom: 0.3rem;
       font-weight: bold;
     }
-    input, select {
+
+    input,
+    select {
       width: 100%;
       padding: 0.6rem;
       border: 1px solid #ccc;
       border-radius: 6px;
       font-size: 1rem;
     }
+
     button {
       margin-top: 1.5rem;
       width: 100%;
@@ -53,6 +61,7 @@
       font-size: 1rem;
       cursor: pointer;
     }
+
     button:hover {
       background-color: #1a242f;
     }
@@ -67,34 +76,41 @@
       border-left: 4px solid #2c3e50;
       padding: 1rem;
       margin-bottom: 1rem;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
       border-radius: 4px;
       background: white;
-    } 
+    }
 
     /* Estaciones */
     .primavera {
-      background-color: #ffcc99; /* naranja claro */
+      background-color: #ffcc99;
+      /* naranja claro */
     }
+
     .verano {
-      background-color: #fff9b1; /* amarillo claro */
+      background-color: #fff9b1;
+      /* amarillo claro */
     }
+
     .otono {
-      background-color: #e6ccb3; /* marroncito claro */
+      background-color: #e6ccb3;
+      /* marroncito claro */
     }
+
     .invierno {
-      background-color: #cceeff; /* azul clarito */
+      background-color: #cceeff;
+      /* azul clarito */
     }
   </style>
 </head>
-<body>
 
+<body>
   <form id="formularioFestival">
     <h1>+ Añadir Nuevo Festival</h1>
     <p>Comparte un nuevo festival con la comunidad</p>
 
     <label for="nombre">Nombre del Festival</label>
-    <input type="text" id="nombre" name="nombre" placeholder="Ej: Rock en la Playa">
+    <input type="text" id="nombre" name="nombre" placeholder="Ej: Rock en la Playa" />
 
     <label for="mes">Mes del Festival</label>
     <select id="mes" name="mes">
@@ -114,7 +130,7 @@
     </select>
 
     <label for="pais">País</label>
-    <input type="text" id="pais" name="pais" placeholder="Ej: España">
+    <input type="text" id="pais" name="pais" placeholder="Ej: España" />
 
     <label for="genero">Género Musical</label>
     <select id="genero" name="genero">
@@ -131,7 +147,7 @@
     </select>
 
     <label for="precio">Precio (€)</label>
-    <input type="number" id="precio" name="precio" placeholder="Ej: 45" min="0">
+    <input type="number" id="precio" name="precio" placeholder="Ej: 45" min="0" />
 
     <button type="submit">Añadir Festival 🎵</button>
   </form>
@@ -139,16 +155,102 @@
   <div id="datos"></div>
 
   <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      var eventos = function () {
+        // const botonSubmit = document.getElementById("botonSub");
+        // const botonSubmit = document.querySelector('#formularioFestival button[type="submit"]');
+
+        const formulario = document.getElementById("formularioFestival");
+
+        if (formulario) {
+          formulario.addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            console.log("validation entered");
+
+            const nombre = document.getElementById("nombre");
+            const mes = document.getElementById("mes");
+            const pais = document.getElementById("pais");
+            const genero = document.getElementById("genero");
+            const precio = document.getElementById("precio");
+
+            let esValido = true;
+
+            function validarLongitud(texto, min, max) {
+              const longitud = texto.trim().length;
+              return longitud >= min && longitud <= max;
+            }
+
+            if (!validarLongitud(nombre.value, 3, 20)) {
+              alert("El nombre del festival debe tener entre 3 y 20 caracteres.");
+              esValido = false;
+            }
+
+            if (!validarLongitud(pais.value, 3, 20)) {
+              alert("El pais debe tener entre 3 y 20 caracteres.");
+              esValido = false;
+            }
+
+            if (mes.value === "") {
+              alert("Por favor, selecciona un mes.");
+              esValido = false;
+            }
+
+            if (genero.value === "") {
+              alert("Por favor, selecciona un genero.");
+              esValido = false;
+            }
+
+            const precioNum = parseFloat(precio.value);
+
+            if (isNaN(precioNum) || precioNum < 0 || precioNum > 300) {
+              alert("El precio debe ser un número entre 0 y 300.");
+              esValido = false;
+            }
+
+            if (esValido) {
+              console.log("formulario correcto");
+
+              festival1 = new Festival(nombre.value, mes.value, pais.value, genero.value, precioNum);
+
+              arrrayFestivales = [festival1];
+
+              arrrayFestivales.forEach((element) => {
+                console.log(element.muestraLog());
+              });
+            }
+          });
+        }
+      };
+
+      eventos(); // Call the eventos function after the DOM is ready
+    });
+
     class Festival {
-      //Defino la clase Festival
+      #nombre;
+      #mes;
+      #pais;
+      #genero;
+      #precio;
 
+      constructor(nombre, mes, pais, genero, precio) {
+        this.#nombre = nombre;
+        this.#mes = mes;
+        this.#pais = pais;
+        this.#genero = genero;
+        this.#precio = precio;
+      }
+
+      muestraLog() {
+
+        return "Festival creado: " + this.#nombre + " - " + this.#mes + " - " + this.#pais + " - " + this.#genero + " - " + this.#precio;
+      }
+
+      muestraHTML() {
+        // return this.#servicio + " - " + this.#pabellon + ": " + pabellones[this.#pabellon] + " - " + mostrarVis;dfd
+      }
     }
-    
-
-    
-
-   
   </script>
-
 </body>
+
 </html>
