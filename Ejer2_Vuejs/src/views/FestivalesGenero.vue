@@ -5,7 +5,7 @@
 
 
 
-
+        <!-- generos filter with select -->
         <h2>Seleccionar genero</h2>
         <select v-model="filterSelect">
             <option value="XXX">seleccione un genero</option>
@@ -15,8 +15,15 @@
         </select>
         <br><br>
 
-        <!-- aqui hacer lo mismo pero con un chceckbox -->
-
+        <!-- generos filter with checkbox -->
+        <h2>Seleccionar generos</h2>
+        <div v-for="genero in uniqueGeneroNames" :key="genero">
+            <label>
+                <input type="checkbox" :value="genero" v-model="checkedGeneros" />
+                {{ genero }}
+            </label>
+        </div>
+        <br><br>
 
 
 
@@ -31,7 +38,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="fest in filteredFestivalesSel" :key="fest.nombre">
+                <tr v-for="fest in filteredFestivalesCheck" :key="fest.nombre">
 
                     <td>{{ fest.nombre }}</td>
                     <td>{{ fest.genero }}</td>
@@ -58,8 +65,10 @@ const store = useFestivalesStore();
 
 
 onMounted(() => {
-    store.cargarFestivales()
-})
+  if (!store.festivales || store.festivales.length === 0) {
+        store.cargarFestivales();
+    }
+});
 
 
 
@@ -72,6 +81,15 @@ const filteredFestivalesSel = computed(() => {
     if (filterSelect.value === 'XXX') return festivales.value; //si quisieras que no salga nada en el default select seria return []
     return festivales.value.filter(fest => fest.genero === filterSelect.value);
 });
+
+
+const checkedGeneros = ref([]);
+
+const filteredFestivalesCheck = computed(() => {
+    if (checkedGeneros.value.length === 0) return festivales.value;
+    return festivales.value.filter(fest => checkedGeneros.value.includes(fest.genero));
+});
+
 
 // para que no salgan repetidos en el select
 const uniqueGeneroNames = computed(() => {

@@ -19,15 +19,20 @@
             </thead>
             <tbody>
                 <tr v-for="fest in filteredFestivales" :key="fest.nombre">
-                    <td><img src="../assets/verano.png" alt="icon" class="service-icon" /></td>
+                    <!-- <td><img src="../assets/verano.png" alt="icon" class="service-icon" /></td> -->
                     <!-- <td>{{ fest.imagen }}</td> -->
                     <!-- <td><img :src="`../assets/${fest.imagen}`" alt="icon" class="service-icon" /></td> -->
+                    <td><img :src="imageMap[fest.imagen]" alt="icon" class="service-icon" /></td>
+
                     <td>{{ fest.nombre }}</td>
                     <td>{{ fest.pais }}</td>
                     <td>{{ fest.genero }}</td>
                     <td>{{ fest.mes }}</td>
                     <td>{{ fest.precio }} €</td>
-                    <td><button>+Info</button></td>
+                    <td>
+                        <RouterLink :to="`/festival/${fest.nombre}`"><button>+Info</button></RouterLink>
+                    </td>
+
                 </tr>
             </tbody>
         </table>
@@ -35,6 +40,19 @@
 </template>
 
 <script setup>
+import invierno from '../assets/invierno.png';
+import primavera from '../assets/primavera.png';
+import verano from '../assets/verano.png';
+import otono from '../assets/otono.png';
+
+const imageMap = {
+    'invierno.png': invierno,
+    'primavera.png': primavera,
+    'verano.png': verano,
+    'otono.png': otono,
+};
+
+
 import { computed, ref, onMounted } from 'vue';
 
 import { useFestivalesStore } from '../stores/festivales';
@@ -47,8 +65,10 @@ const store = useFestivalesStore();
 
 
 onMounted(() => {
-    store.cargarFestivales()
-})
+  if (!store.festivales || store.festivales.length === 0) {
+        store.cargarFestivales();
+    }
+});
 
 
 

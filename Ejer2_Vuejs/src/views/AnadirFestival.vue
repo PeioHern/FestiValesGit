@@ -52,6 +52,7 @@
                     <th>Pais</th>
                     <th>Precio</th>
                     <th>Descripcion</th>
+                    <th>imagen</th>
                 </tr>
             </thead>
             <tbody>
@@ -63,6 +64,7 @@
                     <td>{{ lastFestival.pais }}</td>
                     <td>{{ lastFestival.precio }} €</td>
                     <td>{{ lastFestival.descripcion }}</td>
+                    <td>{{ lastFestival.imagen }}</td>
                 </tr>
             </tbody>
         </table>
@@ -81,8 +83,10 @@ import { useFestivalesStore } from '../stores/festivales';
 const store = useFestivalesStore();
 
 onMounted(() => {
-    store.cargarFestivales()
-})
+    if (!store.festivales || store.festivales.length === 0) {
+        store.cargarFestivales();
+    }
+});
 
 const festivales = computed(() => store.festivales);
 
@@ -121,6 +125,18 @@ const lastFestival = ref(null);
 
 
 const addFestival = () => {
+    
+    // set the image depending on the month selected
+     if (['diciembre', 'enero', 'febrero'].includes(newFestival.value.mes)) {
+        newFestival.value.imagen = 'invierno.png';
+    } else if (['marzo', 'abril', 'mayo'].includes(newFestival.value.mes)) {
+        newFestival.value.imagen = 'primavera.png';
+    } else if (['junio', 'julio', 'agosto'].includes(newFestival.value.mes)) {
+        newFestival.value.imagen = 'verano.png';
+    } else if (['septiembre', 'octubre', 'noviembre'].includes(newFestival.value.mes)) {
+        newFestival.value.imagen = 'otono.png';
+    }
+    
     store.addFestival({ ...newFestival.value }); // spread to copy data
 
     lastFestival.value = { ...newFestival.value }; 

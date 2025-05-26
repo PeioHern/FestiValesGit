@@ -4,6 +4,7 @@ import Bienvenida from '../views/Bienvenida.vue'
 import TodosFestivales from '../views/TodosFestivales.vue'
 import FestivalesGenero from '../views/FestivalesGenero.vue'
 import AnadirFestival from '../views/AnadirFestival.vue'
+import DetalleFestival from '../views/DetalleFestival.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -27,6 +28,11 @@ const router = createRouter({
       path: '/anadirfestival',
       name: 'anadirfestival',
       component: AnadirFestival
+    },
+    {
+      path: '/festival/:nombreFestival',
+      name: 'detalleFestival',
+      component: DetalleFestival
     }
     
   ]
