@@ -166,8 +166,6 @@
           formulario.addEventListener("submit", function (event) {
             event.preventDefault();
 
-            console.log("validation entered");
-
             const nombre = document.getElementById("nombre");
             const mes = document.getElementById("mes");
             const pais = document.getElementById("pais");
@@ -217,7 +215,12 @@
 
               arrrayFestivales.forEach((element) => {
                 console.log(element.muestraLog());
+                document.getElementById("datos").innerHTML += element.muestraHTML();
               });
+
+
+
+
             }
           });
         }
@@ -247,7 +250,15 @@
       }
 
       muestraHTML() {
-        // return this.#servicio + " - " + this.#pabellon + ": " + pabellones[this.#pabellon] + " - " + mostrarVis;dfd
+            return `
+          <div class="festival-info">
+          <strong>${this.#nombre}</strong><br />
+          Mes: ${this.#mes}<br />
+          País: ${this.#pais}<br />
+          Género: ${this.#genero}<br />
+          Precio: €${this.#precio}
+          </div>
+          `;
       }
     }
   </script>

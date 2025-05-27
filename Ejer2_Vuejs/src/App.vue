@@ -11,6 +11,7 @@ import Inicio from './components/Inicio.vue'
       <nav>
         <RouterLink to="/">Inicio</RouterLink>
         <RouterLink to="/todosfestivales">Todos los festivales</RouterLink>
+        <RouterLink to="/todosfestivalesaxios">Todos los festivales (axios)</RouterLink>
         <RouterLink to="/festivalesgenero">Festivales por genero</RouterLink>
         <RouterLink to="/anadirfestival">Añadir festival</RouterLink>
         
